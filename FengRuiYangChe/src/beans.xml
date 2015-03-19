@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+	<!-- Utility component bean -->
+	<bean id="dataAccessTemplate" class="com.ibm.insidesales.glh.template.DataAccessTemplate"/>
+</beans>
