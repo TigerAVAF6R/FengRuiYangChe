@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans>
 	<!-- Utility component bean -->
-	<bean id="dataAccessTemplate" class="com.ibm.insidesales.glh.template.DataAccessTemplate"/>
+	<bean id="dataAccessTemplate" class="com.fryc.template.DataAccessTemplate"/>
+	
+	
+	<!-- DAO -->
+	<bean id="testDAO" class="com.fryc.dao.impl.TestDAOImpl"/>
+	
+	
+	<!-- Service -->
+	<bean id="testService" class="com.fryc.service.impl.TestServiceImpl"/>
+	
 </beans>

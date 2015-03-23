@@ -6,6 +6,16 @@
 						http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
 	<display-name>FengRuiYangChe</display-name>
 	
+	<context-param>
+		<param-name>CONTEXT_CONFIG_FILE</param-name>
+		<param-value>beans.xml</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>com.fryc.listener.BeanContextListener</listener-class>
+	</listener>
+	
+	
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>

@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Map;
+import java.util.Properties;
 
 import org.logicalcobwebs.proxool.configuration.PropertyConfigurator;
 
@@ -52,7 +53,9 @@ public final class DBUtil {
 	 */
 	private static void initializeConnectionPool() {
 		try {
-			PropertyConfigurator.configure("src/db.properties");
+			Properties properties = new Properties();
+			properties.load(DBUtil.class.getClassLoader().getResourceAsStream("db.properties"));  
+			PropertyConfigurator.configure(properties);
 			connectionPoolAlias = PropertiesUtil.getProperty("jdbc-fryc.proxool.alias");
 			isConnPoolInitialized = true;
 		} catch (Throwable thrown) {
