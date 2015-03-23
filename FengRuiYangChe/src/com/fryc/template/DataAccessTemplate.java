@@ -47,8 +47,19 @@ public class DataAccessTemplate {
 			ps.executeUpdate();
 			connection.commit();
 		} catch (SQLException e) {
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				throw new BusinessOperationException(e1);
+			}
 			throw new BusinessOperationException(e);
 		} finally {
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				throw new BusinessOperationException(e1);
+			}
+			
 			try {
 				DBUtil.release(null, ps, connection);
 			} catch (SQLException e) {
@@ -97,8 +108,19 @@ public class DataAccessTemplate {
 			}
 			connection.commit();
 		} catch (SQLException e) {
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				throw new BusinessOperationException(e1);
+			}
 			throw new BusinessOperationException(e);
 		} finally {
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				throw new BusinessOperationException(e1);
+			}
+			
 			try {
 				DBUtil.release(null, ps, connection);
 			} catch (SQLException e) {
@@ -150,8 +172,18 @@ public class DataAccessTemplate {
 			ps.executeBatch();
 			connection.commit();
 		} catch (SQLException e) {
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				throw new BusinessOperationException(e1);
+			}
 			throw new BusinessOperationException(e);
 		} finally {
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				throw new BusinessOperationException(e1);
+			}
 			try {
 				DBUtil.release(null, ps, connection);
 			} catch (SQLException e) {
