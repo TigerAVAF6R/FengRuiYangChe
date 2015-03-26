@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import com.fryc.dao.RowMapper;
 import com.fryc.exception.BusinessOperationException;
@@ -36,7 +37,6 @@ public class DataAccessTemplate {
 		
 		PreparedStatement ps = null;
 		try {
-			connection.setAutoCommit(false);
 			ps = connection.prepareStatement(sql);
 			if (params != null) {
 				int paramCount = params.size();
@@ -62,6 +62,46 @@ public class DataAccessTemplate {
 			
 			try {
 				DBUtil.release(null, ps, connection);
+			} catch (SQLException e) {
+				throw new BusinessOperationException("SQL_CLOSE");
+			}
+		}
+	}
+	
+	/**
+	 * Execute sinlge one SQL for INSERT / UPDATE / DELETE
+	 * 
+	 * @param sql	SQL to be executed, it can be one completed SQL string or one SQL with placeholder "?"
+	 * @param params 
+	 * 			if SQL is with "?", this parameter must be given, 
+	 * 			also the order in the array must be the same with placeholder's order in SQL
+	 */
+	public void executeUpdateNonTransactional(String sql, List<Object> params) {
+		validateParam(sql, params);
+		
+		Connection connection = null;
+		try {
+			connection = DBUtil.getConnection();
+			connection.setAutoCommit(false);
+		} catch (SQLException e) {
+			throw new BusinessOperationException("CONNECTION_OPEN");
+		}
+		
+		PreparedStatement ps = null;
+		try {
+			ps = connection.prepareStatement(sql);
+			if (params != null) {
+				int paramCount = params.size();
+				for (int k=0; k<paramCount; k++) {
+					ps.setObject(k + 1, params.get(k));
+				}
+			}
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			throw new BusinessOperationException(e);
+		} finally {
+			try {
+				DBUtil.release(null, ps, null);
 			} catch (SQLException e) {
 				throw new BusinessOperationException("SQL_CLOSE");
 			}
@@ -281,6 +321,75 @@ public class DataAccessTemplate {
 				throw new BusinessOperationException("SQL_CLOSE");
 			}
 		}
+	}
+	
+	public void commitTransaction(boolean closeConnAfterCommit) {
+		Connection connection = null;
+		try {
+			connection = DBUtil.getConnection();
+		} catch (SQLException e) {
+			throw new BusinessOperationException("CONNECTION_OPEN");
+		}
+		
+		try {
+			connection.commit();
+		} catch (SQLException e) {
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				throw new BusinessOperationException(e1);
+			}
+			throw new BusinessOperationException(e);
+		} finally {
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				throw new BusinessOperationException(e1);
+			}
+			
+			if (closeConnAfterCommit) {
+				try {
+					DBUtil.release(null, null, connection);
+				} catch (SQLException e) {
+					throw new BusinessOperationException("SQL_CLOSE");
+				}
+			}
+		}
+	}
+	
+	public void rollbackTransaction() {
+		Connection connection = null;
+		try {
+			connection = DBUtil.getConnection();
+		} catch (SQLException e) {
+			throw new BusinessOperationException("CONNECTION_OPEN");
+		}
+		
+		boolean isSuccessful = false;
+		try {
+			connection.rollback();
+			isSuccessful = true;
+		} catch (SQLException e) {
+			throw new BusinessOperationException(e);
+		} finally {
+			if (!isSuccessful) {
+				try {
+					connection.rollback();
+				} catch (SQLException e1) {
+					throw new BusinessOperationException(e1);
+				}
+			}
+			
+			try {
+				DBUtil.release(null, null, connection);
+			} catch (SQLException e) {
+				throw new BusinessOperationException("SQL_CLOSE");
+			}
+		}
+	}
+	
+	public String getNewUUID() throws Exception {
+		return UUID.randomUUID().toString();
 	}
 	
 	private void validateParam(String sql, List<Object> params) {

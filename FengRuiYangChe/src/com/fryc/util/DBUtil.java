@@ -12,7 +12,7 @@ import org.logicalcobwebs.proxool.configuration.PropertyConfigurator;
 
 public final class DBUtil {
 
-	private static ThreadLocal<Connection> threadConn = new ThreadLocal<Connection>();
+	private static ThreadLocal<Connection> connThreadLocal = new ThreadLocal<Connection>();
 	
 	/*
 	 * if proxool is initialized successfully, then set isConnPoolInitialized=true,
@@ -64,7 +64,7 @@ public final class DBUtil {
 	}
 	
 	public static Connection getConnection() throws SQLException {
-		Connection conn = threadConn.get();
+		Connection conn = connThreadLocal.get();
 		if (conn != null) {
 			return conn;
 		} else {
@@ -73,7 +73,7 @@ public final class DBUtil {
 			} else {
 				conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PWD);
 			}
-			threadConn.set(conn);
+			connThreadLocal.set(conn);
 			return conn;
 		}
 	}
@@ -89,6 +89,7 @@ public final class DBUtil {
 			} finally {
 				if (connection != null) {
 					connection.close();
+					connThreadLocal.remove();
 				}
 			}
 		}

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fryc.factory.BeanFactory;
 import com.fryc.model.ResponseEntity;
+import com.fryc.model.input.TestInputBean;
 import com.fryc.model.output.TestBean;
 import com.fryc.service.TestService;
 import com.fryc.util.AppConstant;
@@ -64,7 +66,18 @@ public class TestServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		ResponseEntity entity = ResponseEntity.getDefaultEntity();
+		try {
+			TestInputBean inputBean = new TestInputBean();
+			String value = "test value 测试" + UUID.randomUUID().toString();
+			System.out.println("value to be saved: " + value);
+			inputBean.setValue(value);
+			testService.saveNewTest(inputBean);
+		} catch (Exception e) {
+			entity.setSuccessFlag(AppConstant.RESPONSE_FLAG_ERROR);
+			entity.setMessage(MessageTranslater.translateExp(e));
+		}
+		WebUtil.sendJSONResponse(entity, request, response);
 	}
 
 }
