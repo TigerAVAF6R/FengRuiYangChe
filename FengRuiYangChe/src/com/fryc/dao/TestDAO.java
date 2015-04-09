@@ -7,8 +7,8 @@ import com.fryc.model.output.TestBean;
 
 public interface TestDAO {
 
-	List<TestBean> fetchAllTestBean();
+	List<TestBean> fetchAllTestBean() throws Exception;
 	
-	void saveNewTest(TestInputBean inputBean);
+	void saveNewTest(TestInputBean inputBean) throws Exception;
 	
 }

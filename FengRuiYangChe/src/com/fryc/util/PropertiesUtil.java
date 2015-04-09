@@ -40,30 +40,6 @@ public class PropertiesUtil {
 		return value;
 	}
 	
-	public static String getProperty(String key) {
-		String value = null;
-		if (key != null) {
-			InputStream inStream = null;
-			try {
-				Properties props = new Properties();
-				inStream = PropertiesUtil.class.getResourceAsStream(AppConstant.PROPERTY_PATH);
-				props.load(inStream);
-				value = props.getProperty(key);
-			} catch (IOException e) {
-				throw new ExceptionInInitializerError(e);
-			} finally {
-				if (inStream != null) {
-					try {
-						inStream.close();
-					} catch (IOException e) {
-						throw new ExceptionInInitializerError(e);
-					}
-				}
-			}
-		}
-		return value;
-	}
-	
 	/**
 	 * Return a map based on the given key list,
 	 * in the map, key will be given key, value will be property value
@@ -77,7 +53,7 @@ public class PropertiesUtil {
 			InputStream inStream = null;
 			try {
 				Properties props = new Properties();
-				inStream = PropertiesUtil.class.getResourceAsStream(AppConstant.PROPERTY_PATH);
+				inStream = PropertiesUtil.class.getResourceAsStream(AppConstant.PROPERTY_PATH_MESSAGE);
 				props.load(inStream);
 				for (String s : key) {
 					String value = props.getProperty(s);
@@ -132,15 +108,6 @@ public class PropertiesUtil {
 			}
 		}
 		return map;
-	}
-
-	public static void main(String[] args) {
-		String key = "DB_URL";
-		String result = getProperty(key);
-		System.out.println(result);
-		
-		Map<String, String> map = getPropertyMap("DB_DRIVER_NAME", "DB_URL", "BD_API_KEY", "BD_API_SECRET");
-		System.out.println(map);
 	}
 
 }

@@ -19,7 +19,6 @@ public interface AppConstant {
 	String PATTERN_MDY = "MM/dd/yyyy";
 	String PATTERN_MDYHMS = "MM/dd/yyyy HH:mm:ss";
 	
-	String PROPERTY_PATH = "/db.properties";
 	String PROPERTY_PATH_MESSAGE = "/message.properties";
 	
 }

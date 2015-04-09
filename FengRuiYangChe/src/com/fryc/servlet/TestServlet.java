@@ -13,13 +13,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.fryc.factory.BeanFactory;
 import com.fryc.model.ResponseEntity;
 import com.fryc.model.input.TestInputBean;
 import com.fryc.model.output.TestBean;
 import com.fryc.service.TestService;
 import com.fryc.util.AppConstant;
 import com.fryc.util.MessageTranslater;
+import com.fryc.util.SpringContextUtil;
 import com.fryc.util.WebUtil;
 
 /**
@@ -38,7 +38,7 @@ public class TestServlet extends HttpServlet {
     }
 
 	public void init(ServletConfig config) throws ServletException {
-		testService = BeanFactory.getBean("testService", TestService.class);
+		testService = SpringContextUtil.getBean("testService", TestService.class);
 	}
 
 	public void destroy() {

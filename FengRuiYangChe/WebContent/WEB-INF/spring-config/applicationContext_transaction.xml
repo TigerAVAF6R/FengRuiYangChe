@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xmlns:tx="http://www.springframework.org/schema/tx"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans
+  							http://www.springframework.org/schema/beans/spring-beans.xsd
+  							http://www.springframework.org/schema/tx
+  							http://www.springframework.org/schema/tx/spring-tx.xsd
+  							http://www.springframework.org/schema/aop
+  							http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+	</bean>
+	
+	<tx:advice id="advice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="*" propagation="SUPPORTS" isolation="DEFAULT" rollback-for="Throwable" />
+			<tx:method name="fetch*" propagation="NOT_SUPPORTED" isolation="DEFAULT" rollback-for="Throwable" read-only="true" />
+			<tx:method name="update*" propagation="REQUIRED" isolation="DEFAULT" rollback-for="Throwable" />
+			<tx:method name="save*" propagation="REQUIRED" isolation="DEFAULT" rollback-for="Throwable" />
+			<tx:method name="delete*" propagation="REQUIRED" isolation="DEFAULT" rollback-for="Throwable" />
+		</tx:attributes>
+	</tx:advice>
+	
+	<aop:config>
+
+		<aop:pointcut id="txm_pointcut" 
+				expression="execution(* com.fryc.service..*(..))" />
+
+		<aop:advisor pointcut-ref="txm_pointcut" advice-ref="advice" />
+
+	</aop:config>
+
+</beans>
