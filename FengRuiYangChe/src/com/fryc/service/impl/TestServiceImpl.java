@@ -9,6 +9,7 @@ import com.fryc.dao.TestDAO;
 import com.fryc.model.input.TestInputBean;
 import com.fryc.model.output.TestBean;
 import com.fryc.service.TestService;
+import com.fryc.util.AppLogger;
 
 @Service("testService")
 public class TestServiceImpl implements TestService {
@@ -19,12 +20,14 @@ public class TestServiceImpl implements TestService {
 	
 	@Override
 	public List<TestBean> fetchAllTestBean() {
+		AppLogger.enterMethod("TestServiceImpl", "fetchAllTestBean");
 		List<TestBean> list = null;
 		try {
 			list = testDAO.fetchAllTestBean();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+		AppLogger.exitMethod("TestServiceImpl", "fetchAllTestBean");
 		return list;
 	}
 

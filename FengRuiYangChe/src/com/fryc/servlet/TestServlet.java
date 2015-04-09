@@ -18,6 +18,7 @@ import com.fryc.model.input.TestInputBean;
 import com.fryc.model.output.TestBean;
 import com.fryc.service.TestService;
 import com.fryc.util.AppConstant;
+import com.fryc.util.AppLogger;
 import com.fryc.util.MessageTranslater;
 import com.fryc.util.SpringContextUtil;
 import com.fryc.util.WebUtil;
@@ -49,6 +50,7 @@ public class TestServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		AppLogger.enterMethod("TestServlet", "doGet");
 		ResponseEntity entity = ResponseEntity.getDefaultEntity();
 		try {
 			List<TestBean> list = testService.fetchAllTestBean();
@@ -60,6 +62,7 @@ public class TestServlet extends HttpServlet {
 			entity.setMessage(MessageTranslater.translateExp(e));
 		}
 		WebUtil.sendJSONResponse(entity, request, response);
+		AppLogger.exitMethod("TestServlet", "doGet");
 	}
 
 	/**
