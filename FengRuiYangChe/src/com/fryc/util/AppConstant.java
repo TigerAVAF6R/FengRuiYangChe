@@ -4,10 +4,11 @@ public interface AppConstant {
 	
 	String CONTEXT_INIT_PARAM_BEANCONFIG = "CONTEXT_CONFIG_FILE";
 
-	String REQUEST_CREATE = "C"; // insert
-	String REQUEST_READ = "R"; // load data
-	String REQUEST_UPDATE = "U"; // update
-	String REQUEST_DELETE = "D"; // delete
+	String REQUEST_ACTION_KEY = "action";
+	String REQUEST_ACTION_CREATE = "C"; // insert
+	String REQUEST_ACTION_READ = "R"; // load data
+	String REQUEST_ACTION_UPDATE = "U"; // update
+	String REQUEST_ACTION_DELETE = "D"; // delete
 	
 	String RESPONSE_FLAG_SUCCESS = "T";
 	String RESPONSE_FLAG_ERROR = "F";

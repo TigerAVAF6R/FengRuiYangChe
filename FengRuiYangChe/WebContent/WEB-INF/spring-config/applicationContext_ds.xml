@@ -11,7 +11,7 @@
 			<value>com.mysql.jdbc.Driver</value>
 		</property>
 		<property name="driverUrl">
-			<value>jdbc:mysql://123.57.145.160:3306/tiger</value>
+			<value>jdbc:mysql://123.57.145.160:3306/FENGRUI</value>
 		</property>
 		<property name="user" value="root" />
 		<property name="password" value="rSX7btT265" />
@@ -32,7 +32,7 @@
 			<value>com.mysql.jdbc.Driver</value>
 		</property>
 		<property name="url">
-			<value>jdbc:mysql://123.57.145.160:3306/tiger</value>
+			<value>jdbc:mysql://123.57.145.160:3306/FENGRUI</value>
 		</property>
 		<property name="username">
 			<value>root</value>
